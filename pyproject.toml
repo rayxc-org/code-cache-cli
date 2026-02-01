@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "raysurfer-code-caching-cli"
+version = "0.1.0"
+description = "CLI tool for searching, uploading, voting, and browsing cached code snippets from the Raysurfer API"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Raysurfer", email = "team@raysurfer.com" },
+]
+keywords = ["raysurfer", "cli", "caching", "code-snippets", "ai"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "httpx>=0.24.0",
+    "pydantic>=2.0.0",
+]
+
+[project.scripts]
+raysurfer = "raysurfer_cli.cli:app"
+
+[project.urls]
+Homepage = "https://raysurfer.com"
+Documentation = "https://docs.raysurfer.com"
+Repository = "https://github.com/raysurfer/raysurfer-code-caching-cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/raysurfer_cli"]
