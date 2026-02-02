@@ -152,39 +152,32 @@ def upload(
     no_auto_vote: bool = typer.Option(False, "--no-auto-vote", help="Disable automatic upvote"),
     json_output: bool = typer.Option(False, "--json", "-j", help="Output raw JSON"),
 ) -> None:
-    """Upload code files as a cached execution result."""
-    files_written: List[UploadFile] = []
-    for fp in files:
-        if not fp.exists():
-            _fatal(f"File not found: {fp}")
-            return
-        files_written.append(
-            UploadFile(path=str(fp), content=fp.read_text(encoding="utf-8"))
-        )
-
+    """Upload code files as cached execution results (one per API call)."""
     with _get_client() as client:
-        request = UploadRequest(
-            task=task,
-            files_written=files_written,
-            succeeded=succeeded,
-            auto_vote=not no_auto_vote,
-        )
-        try:
-            response = client.upload(request)
-        except Exception as exc:
-            _fatal(f"Upload failed: {exc}")
-            return
+        for fp in files:
+            if not fp.exists():
+                _fatal(f"File not found: {fp}")
+                return
+            request = UploadRequest(
+                task=task,
+                file_written=UploadFile(path=str(fp), content=fp.read_text(encoding="utf-8")),
+                succeeded=succeeded,
+                auto_vote=not no_auto_vote,
+            )
+            try:
+                response = client.upload(request)
+            except Exception as exc:
+                _fatal(f"Upload failed: {exc}")
+                return
 
-    if json_output:
-        console.print_json(response.model_dump_json())
-        return
-
-    if response.success:
-        console.print(f"[bold green]Uploaded successfully.[/bold green]  {response.message}")
-        if response.code_block_ids:
-            console.print(f"Code block IDs: {', '.join(response.code_block_ids)}")
-    else:
-        console.print(f"[bold red]Upload failed.[/bold red]  {response.message}")
+            if json_output:
+                console.print_json(response.model_dump_json())
+            elif response.success:
+                console.print(f"[bold green]Uploaded {fp}.[/bold green]  {response.message}")
+                if response.code_block_ids:
+                    console.print(f"Code block IDs: {', '.join(response.code_block_ids)}")
+            else:
+                console.print(f"[bold red]Upload failed for {fp}.[/bold red]  {response.message}")
 
 
 # ── vote ────────────────────────────────────────────────────────────────────

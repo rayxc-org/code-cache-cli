@@ -27,10 +27,10 @@ class UploadFile(BaseModel):
 
 
 class UploadRequest(BaseModel):
-    """Request body for POST /api/store/execution-result."""
+    """Request body for POST /api/store/execution-result (single file)."""
 
     task: str
-    files_written: List[UploadFile]
+    file_written: UploadFile
     succeeded: bool = True
     auto_vote: bool = True
 
