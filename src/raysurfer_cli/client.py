@@ -81,11 +81,13 @@ class RaysurferClient:
 
     # -- endpoints -----------------------------------------------------------
 
-    def search(self, request: SearchRequest) -> SearchResponse:
+    def search(self, request: SearchRequest, *, public_snips: bool = False) -> SearchResponse:
         """Search for cached code snippets matching a task description."""
+        headers = {"X-Raysurfer-Public-Snips": "true"} if public_snips else {}
         resp = self._client.post(
             "/api/retrieve/search",
             json=request.model_dump(),
+            headers=headers,
         )
         resp.raise_for_status()
         return SearchResponse.model_validate(resp.json())
@@ -162,11 +164,13 @@ class AsyncRaysurferClient:
 
     # -- endpoints -----------------------------------------------------------
 
-    async def search(self, request: SearchRequest) -> SearchResponse:
+    async def search(self, request: SearchRequest, *, public_snips: bool = False) -> SearchResponse:
         """Search for cached code snippets matching a task description."""
+        headers = {"X-Raysurfer-Public-Snips": "true"} if public_snips else {}
         resp = await self._client.post(
             "/api/retrieve/search",
             json=request.model_dump(),
+            headers=headers,
         )
         resp.raise_for_status()
         return SearchResponse.model_validate(resp.json())

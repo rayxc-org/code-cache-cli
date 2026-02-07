@@ -28,6 +28,9 @@ Get your key from the [dashboard](https://raysurfer.com/dashboard/api-keys).
 # Search for cached code
 raysurfer search "Parse CSV and generate chart"
 
+# Include community public snippets in search
+raysurfer search "Parse CSV and generate chart" --public
+
 # Upload code after successful execution
 raysurfer upload "Generate bar chart" chart.py
 
