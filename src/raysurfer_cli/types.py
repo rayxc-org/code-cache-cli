@@ -81,9 +81,7 @@ class SearchMatch(BaseModel):
     """A single match returned from a search query."""
 
     code_block: Optional[CodeBlock] = None
-    combined_score: float = 0.0
-    vector_score: float = 0.0
-    verdict_score: float = 0.0
+    score: float = 0.0
     thumbs_up: int = 0
     thumbs_down: int = 0
     filename: str = ""
@@ -98,7 +96,6 @@ class SearchResponse(BaseModel):
     matches: List[SearchMatch] = Field(default_factory=list)
     total_found: int = 0
     cache_hit: bool = False
-    search_namespaces: List[str] = Field(default_factory=list)
 
 
 class UploadResponse(BaseModel):
@@ -122,7 +119,7 @@ class PatternEntry(BaseModel):
     code_block: Optional[CodeBlock] = None
     thumbs_up: int = 0
     thumbs_down: int = 0
-    combined_score: float = 0.0
+    score: float = 0.0
     # Allow extra fields the API may return.
     model_config = {"extra": "allow"}
 

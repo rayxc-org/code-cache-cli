@@ -64,6 +64,9 @@ def search(
     prefer_complete: bool = typer.Option(
         True, "--prefer-complete/--no-prefer-complete", help="Prefer complete snippets"
     ),
+    public: bool = typer.Option(
+        False, "--public", "-p", help="Include community public snippets in results"
+    ),
     show_code: bool = typer.Option(
         False, "--show-code", "-c", help="Display source code for each match"
     ),
@@ -78,7 +81,7 @@ def search(
             prefer_complete=prefer_complete,
         )
         try:
-            response = client.search(request)
+            response = client.search(request, public_snips=public)
         except Exception as exc:
             _fatal(f"Search failed: {exc}")
             return
@@ -90,8 +93,7 @@ def search(
     # Summary line
     console.print(
         f"\n[bold]Found {response.total_found} result(s)[/bold]"
-        f"  |  cache_hit={response.cache_hit}"
-        f"  |  namespaces={response.search_namespaces}\n"
+        f"  |  cache_hit={response.cache_hit}\n"
     )
 
     if not response.matches:
@@ -110,7 +112,7 @@ def search(
         name = (cb.name if cb and cb.name else match.filename) or "unnamed"
         block_id = (cb.id if cb else "") or ""
         lang = (cb.language if cb else "") or match.language or ""
-        score = f"{match.combined_score:.2f}"
+        score = f"{match.score:.2f}"
         votes = f"+{match.thumbs_up} / -{match.thumbs_down}"
 
         label = Text(name, style="bold")
@@ -263,7 +265,7 @@ def patterns(
         cb = pat.code_block
         name = (cb.name if cb else "") or "unnamed"
         block_id = (cb.id if cb else "") or ""
-        score = f"{pat.combined_score:.2f}"
+        score = f"{pat.score:.2f}"
         votes = f"+{pat.thumbs_up} / -{pat.thumbs_down}"
 
         label = Text(name, style="bold")
