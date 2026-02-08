@@ -1,5 +1,7 @@
 # Raysurfer Code Caching CLI
 
+[Website](https://raysurfer.com) · [Docs](https://docs.raysurfer.com) · [Dashboard](https://raysurfer.com/dashboard/api-keys)
+
 CLI tool for searching, uploading, voting, and browsing cached code snippets from the Raysurfer API.
 
 ## Installation
