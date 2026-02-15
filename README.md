@@ -1,6 +1,6 @@
 # Raysurfer Code Caching CLI
 
-[Website](https://raysurfer.com) · [Docs](https://docs.raysurfer.com) · [Dashboard](https://raysurfer.com/dashboard/api-keys)
+[Website](https://www.raysurfer.com) · [Docs](https://docs.raysurfer.com) · [Dashboard](https://www.raysurfer.com/dashboard/api-keys)
 
 CLI tool for searching, uploading, voting, and browsing cached code snippets from the Raysurfer API.
 
@@ -22,7 +22,7 @@ uv pip install raysurfer-code-caching-cli
 export RAYSURFER_API_KEY=your_api_key_here
 ```
 
-Get your key from the [dashboard](https://raysurfer.com/dashboard/api-keys).
+Get your key from the [dashboard](https://www.raysurfer.com/dashboard/api-keys).
 
 ## Commands
 

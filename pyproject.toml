@@ -36,7 +36,7 @@ dependencies = [
 raysurfer = "raysurfer_cli.cli:app"
 
 [project.urls]
-Homepage = "https://raysurfer.com"
+Homepage = "https://www.raysurfer.com"
 Documentation = "https://docs.raysurfer.com"
 Repository = "https://github.com/raysurfer/raysurfer-code-caching-cli"
 
