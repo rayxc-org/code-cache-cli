@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 import typer
 from rich.console import Console
@@ -67,6 +66,11 @@ def search(
     public: bool = typer.Option(
         False, "--public", "-p", help="Include community public snippets in results"
     ),
+    per_function_reputation: bool = typer.Option(
+        True,
+        "--per-function-reputation/--no-per-function-reputation",
+        help="Inject per-function reputation comments and metadata into matched source",
+    ),
     show_code: bool = typer.Option(
         False, "--show-code", "-c", help="Display source code for each match"
     ),
@@ -79,6 +83,7 @@ def search(
             top_k=top_k,
             min_verdict_score=min_score,
             prefer_complete=prefer_complete,
+            per_function_reputation=per_function_reputation,
         )
         try:
             response = client.search(request, public_snips=public)
@@ -152,6 +157,11 @@ def upload(
     ),
     succeeded: bool = typer.Option(True, "--succeeded/--failed", help="Mark execution as succeeded or failed"),
     no_auto_vote: bool = typer.Option(False, "--no-auto-vote", help="Disable automatic upvote"),
+    per_function_reputation: bool = typer.Option(
+        True,
+        "--per-function-reputation/--no-per-function-reputation",
+        help="Extract and track per-function reputation for uploaded code",
+    ),
     json_output: bool = typer.Option(False, "--json", "-j", help="Output raw JSON"),
 ) -> None:
     """Upload code files as cached execution results (one per API call)."""
@@ -165,6 +175,7 @@ def upload(
                 file_written=UploadFile(path=str(fp), content=fp.read_text(encoding="utf-8")),
                 succeeded=succeeded,
                 auto_vote=not no_auto_vote,
+                per_function_reputation=per_function_reputation,
             )
             try:
                 response = client.upload(request)
